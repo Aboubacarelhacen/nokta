@@ -6,13 +6,21 @@ import QuestionsScreen from '../screens/QuestionsScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import SpecScreen from '../screens/SpecScreen';
 import HistoryScreen from '../screens/HistoryScreen';
+import AssistantScreen from '../screens/AssistantScreen';
+
+export type SpecParams = {
+  idea?: string;
+  answers?: Record<string, string>;
+  spec?: Array<{ theme: string; content: string; accent: string }>;
+};
 
 export type RootStackParamList = {
   Welcome: undefined;
+  Assistant: undefined;
   Input: undefined;
   Questions: undefined;
   Loading: undefined;
-  Spec: undefined;
+  Spec: SpecParams | undefined;
   History: undefined;
 };
 
@@ -28,6 +36,7 @@ export default function AppNavigator() {
       }}
     >
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen name="Assistant" component={AssistantScreen} />
       <Stack.Screen name="Input" component={InputScreen} />
       <Stack.Screen name="Questions" component={QuestionsScreen} />
       <Stack.Screen name="Loading" component={LoadingScreen} />

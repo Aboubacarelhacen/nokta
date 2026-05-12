@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors } from '../theme/colors';
@@ -12,8 +12,9 @@ import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
 import { Svg, Path, Rect } from 'react-native-svg';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Spec'>;
+type SpecRoute = RouteProp<RootStackParamList, 'Spec'>;
 
-const SPEC = [
+const DEFAULT_SPEC = [
   { theme: 'Problem', content: 'Students struggle to coordinate study groups effectively. There is no clear way to divide revision topics, track who has covered what, or set shared deadlines.', accent: '#C97A30' },
   { theme: 'Target User', content: 'All students in the group are the primary users. However, the group leader specifically initiates the workspace setup and assigns initial topics.', accent: '#4A7A28' },
   { theme: 'MVP Scope', content: 'Core features limited to: Group creation and link sharing. Topic assignment and individual status marking. Overall progress tracking and a shared deadline countdown view.', accent: '#8C6C30' },
@@ -23,6 +24,9 @@ const SPEC = [
 
 export default function SpecScreen() {
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<SpecRoute>();
+  const SPEC = route.params?.spec ?? DEFAULT_SPEC;
+  const ideaFromAssistant = route.params?.idea;
   const [copied, setCopied] = useState(false);
 
   const copy = () => {
@@ -54,7 +58,7 @@ export default function SpecScreen() {
             <GreenPill label="Study Group Organizer" />
             <Text style={styles.headDate}>Just now</Text>
           </View>
-          <Text style={styles.ideaText}>"An app that helps university students organize study groups and divide revision topics…"</Text>
+          <Text style={styles.ideaText}>"{ideaFromAssistant || 'An app that helps university students organize study groups and divide revision topics…'}"</Text>
         </Animated.View>
 
         {/* sections */}
